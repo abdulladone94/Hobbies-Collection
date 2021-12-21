@@ -17,8 +17,21 @@ const db = mysql.createConnection({
   database: "hobbies_collection",
 });
 
+app.post("/register", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  db.query(
+    "INSERT INTO login (username, password) VALUES (?,?)",
+    [username, password],
+    (err, result) => {
+      console.log(err);
+    }
+  );
+});
+
 app.get("/", (req, res) => {
-  res.send("Hello WORLD");
+  res.send("home page hellow  mfdn ");
 });
 
 app.listen(PORT, () => {
