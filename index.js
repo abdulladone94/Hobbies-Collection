@@ -4,6 +4,7 @@ var mysql = require("mysql");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const md5 = require("md5");
 const PORT = 3003;
 
 const app = express();
@@ -19,7 +20,7 @@ const db = mysql.createConnection({
 
 app.post("/register", (req, res) => {
   const username = req.body.username;
-  const password = req.body.password;
+  const password = md5(req.body.password);
 
   db.query(
     "INSERT INTO login (username, password) VALUES (?,?)",
@@ -32,7 +33,7 @@ app.post("/register", (req, res) => {
 
 app.post("/login", (req, res) => {
   const username = req.body.username;
-  const password = req.body.password;
+  const password = md5(req.body.password);
 
   db.query(
     "SELECT * FROM login WHERE username = ? and password = ?",
