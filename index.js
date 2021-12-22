@@ -30,6 +30,26 @@ app.post("/register", (req, res) => {
   );
 });
 
+app.post("/login", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  db.query(
+    "SELECT * FROM login WHERE username = ? and password = ?",
+    [username, password],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      }
+      if (result.length > 0) {
+        res.send(result);
+      } else {
+        res.send({ message: "Wrong entey" });
+      }
+    }
+  );
+});
+
 app.get("/", (req, res) => {
   res.send("home page hellow  mfdn ");
 });
