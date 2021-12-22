@@ -29,6 +29,7 @@ app.post("/register", (req, res) => {
       console.log(err);
     }
   );
+  res.send();
 });
 
 app.post("/login", (req, res) => {
@@ -45,14 +46,10 @@ app.post("/login", (req, res) => {
       if (result.length > 0) {
         res.send(result);
       } else {
-        res.send({ message: "Wrong entey" });
+        res.status(400).send();
       }
     }
   );
-});
-
-app.get("/", (req, res) => {
-  res.send("home page hellow  mfdn ");
 });
 
 app.listen(PORT, () => {
