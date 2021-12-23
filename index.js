@@ -20,15 +20,17 @@ const db = mysql.createConnection({
 
 app.post("/register", (req, res) => {
   const username = req.body.username;
+  const email = req.body.email;
   const password = md5(req.body.password);
 
   db.query(
-    "INSERT INTO login (username, password) VALUES (?,?)",
-    [username, password],
+    "INSERT INTO login (username, email, password) VALUES (?,?,?)",
+    [username, email, password],
     (err, result) => {
       console.log(err);
     }
   );
+  res.send();
 });
 
 app.post("/login", (req, res) => {
@@ -45,15 +47,29 @@ app.post("/login", (req, res) => {
       if (result.length > 0) {
         res.send(result);
       } else {
-        res.send({ message: "Wrong entey" });
+        res.status(400).send();
       }
     }
   );
 });
 
 app.get("/", (req, res) => {
-  res.send("home page hellow  mfdn ");
+  db.query("SELECT * FROM login", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(result);
+    }
+  });
 });
+
+// db.query("DELETE FROM login", (err, result) => {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log(result);
+//   }
+// });
 
 app.listen(PORT, () => {
   console.log(`Server up & running on port ${PORT}`);
