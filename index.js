@@ -63,6 +63,23 @@ app.get("/", (req, res) => {
   });
 });
 
+app.post("/", (req, res) => {
+  const hobby1 = req.body.hobby1;
+  const hobby2 = req.body.hobby2;
+  const hobby3 = req.body.hobby3;
+  const hobby4 = req.body.hobby4;
+  const hobby5 = req.body.hobby5;
+
+  db.query(
+    "INSERT INTO hobbies (hobby1, hobby2, hobby3, hobby4, hobby5) VALUES (?,?,?,?,?)",
+    [hobby1, hobby2, hobby3, hobby4, hobby5],
+    (err, result) => {
+      console.log(err);
+    }
+  );
+  res.send();
+});
+
 // db.query("DELETE FROM login", (err, result) => {
 //   if (err) {
 //     console.log(err);
