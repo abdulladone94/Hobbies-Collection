@@ -58,7 +58,8 @@ app.get("/", (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      console.log(result);
+      res.send(result);
+      // console.log(result);
     }
   });
 });
@@ -78,6 +79,17 @@ app.post("/", (req, res) => {
     }
   );
   res.send();
+});
+
+app.get("/hobby", (req, res) => {
+  db.query("SELECT * FROM hobbies", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+      // console.log(result);
+    }
+  });
 });
 
 // db.query("DELETE FROM login", (err, result) => {
