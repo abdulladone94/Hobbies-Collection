@@ -92,14 +92,6 @@ app.get("/hobby", (req, res) => {
   });
 });
 
-// db.query("DELETE FROM login", (err, result) => {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log(result);
-//   }
-// });
-
 app.listen(PORT, () => {
   console.log(`Server up & running on port ${PORT}`);
 });
