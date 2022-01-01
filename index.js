@@ -23,14 +23,25 @@ app.post("/register", (req, res) => {
   const email = req.body.email;
   const password = md5(req.body.password);
 
-  db.query(
-    "INSERT INTO login (username, email, password) VALUES (?,?,?)",
-    [username, email, password],
-    (err, result) => {
-      console.log(err);
+  db.query("SELECT * FROM login WHERE email = ?", [email], (err, result) => {
+    if (result.length < 1) {
+      db.query(
+        "INSERT INTO login (username, email, password) VALUES (?,?,?)",
+        [username, email, password],
+        (err, result) => {
+          console.log(err);
+        }
+      );
+      res.send();
+    } else {
+      res.status(409).send({
+        success: false,
+        message: "email already exists.",
+        err: err,
+      });
+      console.log("email already exists.");
     }
-  );
-  res.send();
+  });
 });
 
 app.post("/login", (req, res) => {
@@ -47,7 +58,12 @@ app.post("/login", (req, res) => {
       if (result.length > 0) {
         res.send(result);
       } else {
-        res.status(400).send();
+        res.status(401).send({
+          success: false,
+          message: "First name and Password doesn't match.",
+          err: err,
+        });
+        console.log("First name and Password doesn't match.");
       }
     }
   );
@@ -59,7 +75,6 @@ app.get("/", (req, res) => {
       console.log(err);
     } else {
       res.send(result);
-      // console.log(result);
     }
   });
 });
@@ -87,7 +102,6 @@ app.get("/hobby", (req, res) => {
       console.log(err);
     } else {
       res.send(result);
-      // console.log(result);
     }
   });
 });
