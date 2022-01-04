@@ -80,20 +80,20 @@ app.get("/", (req, res) => {
 });
 
 app.post("/", (req, res) => {
-  const hobby1 = req.body.hobby1;
-  const hobby2 = req.body.hobby2;
-  const hobby3 = req.body.hobby3;
-  const hobby4 = req.body.hobby4;
-  const hobby5 = req.body.hobby5;
+  const hobbyies = req.body;
 
-  db.query(
-    "INSERT INTO hobbies (hobby1, hobby2, hobby3, hobby4, hobby5) VALUES (?,?,?,?,?)",
-    [hobby1, hobby2, hobby3, hobby4, hobby5],
-    (err, result) => {
-      console.log(err);
-    }
-  );
-  res.send();
+  if (Array.isArray(hobbyies)) {
+    hobbyies.forEach((hobby) => {
+      db.query(
+        `INSERT INTO hobbies (hobby1) VALUES (?)`,
+        [hobby],
+        (err, result) => {
+          console.log(err);
+        }
+      );
+    });
+    res.send();
+  }
 });
 
 app.get("/hobby", (req, res) => {
@@ -105,6 +105,8 @@ app.get("/hobby", (req, res) => {
     }
   });
 });
+
+// db.query("DELETE FROM hobbies");
 
 app.listen(PORT, () => {
   console.log(`Server up & running on port ${PORT}`);
