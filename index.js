@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-var mysql = require("mysql");
+const mysql = require("mysql");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -85,14 +85,32 @@ app.post("/", (req, res) => {
   if (Array.isArray(hobbyies)) {
     hobbyies.forEach((hobby) => {
       db.query(
-        `INSERT INTO hobbies (hobby1) VALUES (?)`,
+        "SELECT * FROM hobbies WHERE hobby1 = ?",
         [hobby],
         (err, result) => {
-          console.log(err);
+          if (err) {
+            res.send(500);
+          }
+          if (result.length < 1) {
+            db.query(
+              "INSERT INTO hobbies (hobby1) VALUES (?)",
+              [hobby],
+              (err, result) => {
+                console.log(err);
+              }
+            );
+            res.send();
+          }
+          // else {
+          //   res.status(409).send({
+          //     success: false,
+          //     message: "Already added this hobby.",
+          //     err: err,
+          //   });
+          // }
         }
       );
     });
-    res.send();
   }
 });
 
